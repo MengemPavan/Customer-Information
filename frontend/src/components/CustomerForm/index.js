@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { TextField, Button, Box } from '@mui/material';
@@ -7,19 +7,20 @@ import { addCustomer } from "../../Store/customerSlice";
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
-  phoneNumber: Yup.string().required('Phone number is required').matches(/^\d{10}$/, 'Phone number is not valid'),
+  phone: Yup.string().required('Phone number is required').matches(/^\d{10}$/, 'Phone number is not valid'),
   email: Yup.string().email('Enter a valid email').required('Email is required'),
   address: Yup.string().required('Address is required'),
   currentOrganization: Yup.string().required('Current organization is required'),
 });
 
 const CustomerForm = () => {
+  const error = useSelector((state) => state.customer.error);
   const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
       name: '',
-      phoneNumber: '',
+      phone: '',
       email: '',
       address: '',
       currentOrganization: '',
@@ -45,13 +46,13 @@ const CustomerForm = () => {
       />
       <TextField
         fullWidth
-        id="phoneNumber"
-        name="phoneNumber"
+        id="phone"
+        name="phone"
         label="Phone Number"
-        value={formik.values.phoneNumber}
+        value={formik.values.phone}
         onChange={formik.handleChange}
-        error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
-        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+        error={formik.touched.phone && Boolean(formik.errors.phone)}
+        helperText={formik.touched.phone && formik.errors.phone}
         margin="normal"
       />
       <TextField

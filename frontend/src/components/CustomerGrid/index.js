@@ -1,12 +1,27 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { Box, Grid, Paper, Typography } from '@mui/material';
+import { fetchCustomersApi } from '../../Api/customerApi';
 
 const CustomerGrid = () => {
-  const customers = useSelector((state) => state.customer.customers);
+  const [customers, setCustomers] = useState([]);
+  const [error, setError] = useState(null);
+
+  const fetchCustomers = async () => {
+    try {
+      const response = await fetchCustomersApi();
+      setCustomers(response.data);
+    } catch (err) {
+      setError('Failed to load customer data');
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
 
   return (
     <Box sx={{ mt: 5 }}>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
       <Grid container spacing={2}>
         {customers.map((customer, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
