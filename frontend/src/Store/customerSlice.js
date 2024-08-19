@@ -18,7 +18,7 @@ const customerSlice = createSlice({
   initialState: {
     customers: [],
     loading: false,
-    error: null,
+    error: [],
   },
   reducers: {},
   extraReducers: (builder) => {
